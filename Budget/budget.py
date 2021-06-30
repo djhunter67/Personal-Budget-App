@@ -69,7 +69,7 @@ class Budget_Data(object):
             print(e)
         finally:
             self.cur = self.connection.cursor()
-            self.cur.execute("SELECT * FROM Budget")
+            self.cur.execute("SELECT * FROM Budget ORDER BY cost")
             rows = self.cur.fetchall()
 
             return self, rows
