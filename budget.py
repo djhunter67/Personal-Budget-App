@@ -91,7 +91,7 @@ def main():
     JUL.insert_bills('AT&T', 70.00)
     JUL.insert_bills('Electric Bill', 157.44)
     JUL.insert_bills('T-mobile', 116.96 - 50)
-    JUL.insert_bills('Rent', 2300)
+    JUL.insert_bills('Rent', 2306.39)
     JUL.insert_bills('Life Ins.', 15.22 + 16.63 + 2.50)
     JUL.insert_bills('YouTube Red', 5.99)
     JUL.insert_bills('KinderCare', 980)
