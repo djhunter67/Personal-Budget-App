@@ -32,7 +32,7 @@ class Budget():
     def calculate(self) -> float:
         """Deduct bills from total doll hairs"""
 
-        with Budget_Data('/home/djhunter67/Desktop/Budget/budget_database.db') as db:
+        with Budget_Data('./budget_database.db') as db:
             tot_deductions = 0
             for date, item, cost in db[1]:
                 tot_deductions += cost
@@ -64,14 +64,15 @@ class Budget_Data(object):
 
     def __enter__(self):
         try:
-            self.connection = sqlite3.connect('/home/djhunter67/Desktop/Budget/budget_database.db')
+            self.connection = sqlite3.connect(
+                './budget_database.db')
         except Error as e:
             print(e)
         finally:
             self.cur = self.connection.cursor()
             self.cur.execute("SELECT * FROM Budget ORDER BY cost")
             rows = self.cur.fetchall()
-
+            # make rows a str to add tables to a new db
             return self, rows
 
     def __exit__(self, ext_type, exc_value, traceback):
@@ -106,10 +107,9 @@ def main():
 
     print(f'\n{"Starting Funds: ":>20}${F.YELLOW}{JUL.tot_dollars}{R}\
  {JUL._date.upper()}\n')
-    with Budget_Data('budget_database.db') as db:
-        
 
-        
+    with Budget_Data('budget_database.db') as db:
+
         db[0].execute(sql_table_budget)
         for item, cost in JUL.items_costs.items():
             try:
