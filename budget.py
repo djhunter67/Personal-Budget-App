@@ -97,6 +97,9 @@ def main():
     JUL.insert_bills('KinderCare', 980)
     JUL.insert_bills('USAA', 350)
     JUL.insert_bills('Storage', 201.16)
+    JUL.insert_bills('Doordash', 9.99)
+    JUL.insert_bills('Panda Exprss', 30.26)
+
 
     sql_table_budget = """
     CREATE TABLE IF NOT EXISTS Budget
