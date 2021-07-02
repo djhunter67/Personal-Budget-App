@@ -44,9 +44,14 @@ class Budget():
 class Budget_Data(object):
     """DATABASE Class"""
 
-    def __init__(self, filename):
+    def __init__(self, filename, table_maker=None):
         self.filename = filename
         self.cur = None
+
+        if table_maker:
+            self.connection = sqlite3.connect(self.filename)
+            self.cur = self.connection.cursor()
+            self.cur.execute(table_maker)
 
     def table_work(self, date, name, cost):
         self.cur.execute(
@@ -64,13 +69,12 @@ class Budget_Data(object):
 
     def __enter__(self):
         try:
-            self.connection = sqlite3.connect(
-                './budget_database.db')
+            self.connection = sqlite3.connect(self.filename)
+            self.cur = self.connection.cursor()
+            self.cur.execute("SELECT * FROM Budget ORDER BY cost")
         except Error as e:
             print(e)
         finally:
-            self.cur = self.connection.cursor()
-            self.cur.execute("SELECT * FROM Budget ORDER BY cost")
             rows = self.cur.fetchall()
             # make rows a str to add tables to a new db
             return self, rows
@@ -99,7 +103,9 @@ def main():
     JUL.insert_bills('Storage', 201.16)
     JUL.insert_bills('Doordash', 9.99)
     JUL.insert_bills('Panda Exprss', 30.26)
-
+    JUL.insert_bills('Publix', 92.53)
+    JUL.insert_bills('KinderCare Uniforms', 55.00 * 2)
+    JUL.insert_bills('CBR Stem Cells', 1425)
 
     sql_table_budget = """
     CREATE TABLE IF NOT EXISTS Budget
@@ -111,14 +117,14 @@ def main():
     print(f'\n{"Starting Funds: ":>20}${F.YELLOW}{JUL.tot_dollars}{R}\
  {JUL._date.upper()}\n')
 
-    with Budget_Data('budget_database.db') as db:
+    with Budget_Data('budget_database.db', sql_table_budget) as db:
 
-        db[0].execute(sql_table_budget)
+        # db[0].execute(sql_table_budget)
         for item, cost in JUL.items_costs.items():
             try:
                 db[0].table_work(JUL._date, item, cost)
             except:
-                pass
+                continue
         db[0].commit()
 
         for date, item, cost in db[1]:
