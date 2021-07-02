@@ -123,7 +123,7 @@ def main():
         for item, cost in JUL.items_costs.items():
             try:
                 db[0].table_work(JUL._date, item, cost)
-            except:
+            except Error:
                 continue
         db[0].commit()
 
