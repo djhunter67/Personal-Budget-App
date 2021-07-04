@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+import pathlib
 import sqlite3
 from sqlite3.dbapi2 import Error
 from colorama import Fore as F
@@ -12,7 +12,7 @@ class Budget:
 
     items_costs = {}
     tot_dollars = 0.0
-    _date = ""
+    # _date = ""
 
     def __init__(self, month, tot_dollars):
 
@@ -31,12 +31,12 @@ class Budget:
 
     def calculate(self) -> float:
         """Deduct bills from total doll hairs"""
-
+        starting_money = self.tot_dollars
         with Budget_Data("./budget_database.db") as db:
             tot_deductions = 0
             for date, item, cost, oid in db[1]:
                 tot_deductions += cost
-            net_monies_rem = self.tot_dollars - tot_deductions
+            net_monies_rem = starting_money - tot_deductions
 
         return net_monies_rem
 
@@ -44,14 +44,24 @@ class Budget:
 class Budget_Data(object):
     """DATABASE Class"""
 
-    def __init__(self, filename, table_maker=None):
+    def __init__(self, filename) -> None:
         self.filename = filename
         self.cur = None
 
-        if table_maker:
+        if not pathlib.Path(self.filename).exists():
+            sql_table_budget = """
+                CREATE TABLE IF NOT EXISTS Budget
+                (date text NOT NULL,
+                name text PRIMARY KEY,
+                cost real NOT NULL,
+                )
+                """
+
             self.connection = sqlite3.connect(self.filename)
             self.cur = self.connection.cursor()
-            self.cur.execute(table_maker)
+            self.cur.execute(sql_table_budget)
+            self.cur.close()
+            self.connection.close()
 
     def table_work(self, date, name, cost):
         self.cur.execute(
@@ -109,20 +119,14 @@ def main():
     JUL.insert_bills("KinderCare Uniforms", 55.00 * 2)
     JUL.insert_bills("CBR Stem Cells", 1425)
     JUL.insert_bills("Amazon for Corbin", 109.10)
-
-    sql_table_budget = """
-    CREATE TABLE IF NOT EXISTS Budget
-        (date text NOT NULL,
-        name text PRIMARY KEY,
-        cost real NOT NULL)
-        """
+    JUL.insert_bills("The Dutch Pot", 58.91)
 
     print(
         f'\n{"Starting Funds: ":>20}${F.YELLOW}{JUL.tot_dollars}{R}\
  {JUL._date.upper()}\n'
     )
 
-    with Budget_Data("budget_database.db", sql_table_budget) as db:
+    with Budget_Data("./budget_database.db") as db:
 
         for item, cost in JUL.items_costs.items():
             try:
