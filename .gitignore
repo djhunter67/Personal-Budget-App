@@ -1,3 +1,4 @@
 .vscode
 __py*__
 venv
+api_key.tx
