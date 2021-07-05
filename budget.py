@@ -24,11 +24,6 @@ class Budget:
 
         Budget.items_costs.update({item: cost})
 
-    def remove_bills(self, item):
-        """Remove and item name and item cost"""
-
-        del Budget.items_costs[item]
-
     def calculate(self) -> float:
         """Deduct bills from total doll hairs"""
         starting_money = self.tot_dollars
@@ -70,14 +65,11 @@ class Budget_Data(object):
         )
 
     def execute(self, data):
-        """Insert data into table"""
+        """Manipulate data in table"""
         self.cur.execute(data)
 
     def commit(self):
         self.connection.commit()
-
-    def close(self):
-        self.connection.close()
 
     def __enter__(self):
         try:
@@ -112,7 +104,7 @@ def main():
     JUL.insert_bills("YouTube Red", 5.99)
     JUL.insert_bills("KinderCare", 980)
     JUL.insert_bills("USAA", 350)
-    JUL.insert_bills("Storage", 201.16)
+    # JUL.insert_bills("Storage", 201.16)
     JUL.insert_bills("Doordash", 9.99)
     JUL.insert_bills("Panda Exprss", 30.26)
     JUL.insert_bills("Publix", 92.53)
