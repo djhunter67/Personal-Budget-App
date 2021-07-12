@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from budget_gui import Budget_GUI
 import tkinter as tk
 

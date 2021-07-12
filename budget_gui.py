@@ -25,10 +25,20 @@ class Budget_GUI(tk.Frame):
         #                    ENTRY FIELDS                            #
         ##############################################################
 
+        list1 = [
+            "PICK MONTH",
+            "JUL 2021",
+            "AUG 2021",
+            "SEP 2021",
+            "OCT 2021",
+            "NOV 2021",
+            "DEC 2021",
+            "JAN 2022"
+            ]
         self.const_month = tk.StringVar()
-        self.const_month_ = ttk.Entry(
-            self.the_frame, textvariable=self.const_month, width=10
-        )
+        # self.const_month.set()
+        self.const_month_ = ttk.OptionMenu(
+            self.the_frame, self.const_month, *list1)
         self.const_month_.grid(row=1, column=1, padx=0)
 
         self.const_money = tk.StringVar()
@@ -111,9 +121,8 @@ class Budget_GUI(tk.Frame):
                 showerror(None, "Both Date and Starting monies are required")
                 return None
             else:
-                month = self.const_month.get()
                 month = Budget(self.const_month.get(), self.const_money.get())
-                month.tot_dollars
+                showinfo("Monthly Income", month.tot_dollars)
 
         def remove_() -> None:
 

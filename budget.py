@@ -112,9 +112,20 @@ def main():
     JUL.insert_bills("CBR Stem Cells", 1425)
     JUL.insert_bills("Amazon for Corbin", 109.10)
     JUL.insert_bills("The Dutch Pot", 58.91)
+    JUL.insert_bills("Chips: Target", 3.10)
+    JUL.insert_bills("Dunkin Donuts", 6.41)
+    JUL.insert_bills("QUIP", 10.00)
+    JUL.insert_bills("Mod Pizza", 14.17)
+    JUL.insert_bills("Dunkin", 17.34)
+    JUL.insert_bills("Dinner: Wendys", 28.44)
+    JUL.insert_bills("Lunch: The Dutch Pot", 40.05)
+    JUL.insert_bills("Juice & Soda", 43.13)
+    JUL.insert_bills("Seafood", 49.41)
+    JUL.insert_bills("Sam's Club", 124.37)
+    JUL.insert_bills("Twin Mattress", 141.54)
 
     print(
-        f'\n{"Starting Funds: ":>20}${F.YELLOW}{JUL.tot_dollars}{R}\
+        f'\n{"Starting Funds: ":>22}${F.YELLOW}{JUL.tot_dollars}{R}\
  {JUL._date.upper()}\n'
     )
 
@@ -128,9 +139,9 @@ def main():
         db[0].commit()
 
         for date, item, cost, oid in db[1]:
-            print(f"{item:>20}: {F.RED}{cost}{R}")
+            print(f"{item:>20}: {F.RED}{cost:.2f}{R}")
 
-    print(f'\n{"Remaining Funds: ":>20}${F.GREEN}{JUL.calculate():.2f}{R}\n')
+    print(f'\n{"Remaining Funds: ":>22}${F.GREEN}{JUL.calculate():.2f}{R}\n')
 
 
 if __name__ == "__main__":
